@@ -1,0 +1,104 @@
+<settings>
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST ='smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS =True
+EMAIL_HOST_USER = 'dpservice200@gmail.com'
+EMAIL_HOST_PASSWORD = 'Soorajsivadas767'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = "/static/"
+
+django_heroku.settings(locals())
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+if 'DATABASE_URL' in os.environ:
+    import dj_database_url
+
+    DATABASES = {'default': dj_database_url.config()}
+import django_heroku
+<!--you should import dj_database_url from pip if not installed-->
+</settings>
+<models>
+Service = models.CharField(max_length=100,choices=CHOICES,default='null')
+<!--CHOICES should be tuples-->
+CHOICES = (( Wedding_Related,"Wedding Related Photography"),(Birthday_Related,"Birthday Related Photography"))
+<!--LHS value to be stored-->
+auto_now_add=True
+<!--Use for the  Datefield,no need to import-->
+<forms>
+Fullname = forms.CharField(label='',widget=forms.TextInput(attrs={'placeholder': 'Fullname'}))
+<!--for the selection list of CHOICES,in forms.py imported from models-->
+ class Meta:
+        model= ContactModelForm
+        fields= [""]
+<!--at the end of the class-->
+</forms>
+</models>
+<project-urls>
+from django.urls import path,include
+include('dasphoto.urls')
+</project-urls>
+<views>
+from django.contrib import messages
+messages.success(request,'Thank you {username} for this valuable info'.format(username=name))
+<!--in the html template for the function {{% if meassages %}}
+{{% for message in  meassages %}}
+{{  meassage }}-->
+
+
+from django.core import mail
+from django.template.loader import render_to_string
+<!--everything subject,matter,from-mail-address,[to-email-address,] should be in string -->
+send_mail(subject,matter,to-mail-address,[from_email,],fail_silently=False)
+              <!--to add html in email -->
+                html_message = render_to_string('dasphoto/mail_template.html', {'name':name,'reg':True,'Mat':False})
+                <!--plain message  -->
+                plain_message = strip_tags(html_message)
+                from_email = 'dpservice200@gmail.com'
+
+from django.utils.html import strip_tags
+
+from datetime import datetime
+from datetime import date
+today = date.today()
+d1 = today.strftime("%d")
+d2 = today.strftime("%m")
+
+
+from django.shortcuts import render, redirect
+<!--should be redirecting to the 'name' of the url-->
+
+from django.http import HttpResponse, HttpResponseRedirect
+
+from django.core.mail import send_mail, BadHeaderError
+ except BadHeaderError:
+                return HttpResponse('Invalid header found.')
+
+import random
+rand_num = random.randint(1,1000000) # returns a random integer
+
+object of the class.is_valid()
+object of the class.cleaned_data['']
+object of the class.save() 
+<!--to save into the database-->
+object of the class.update(Newsletter=False)
+<!--to change the database-->
+<!--either you can change access the databse from the object or filter it-->
+
+
+</views>
+<admin>
+admin.site.register()
+<!--list to be displayed on admin page-->
+list_display
+</admin>
+<templates>
+{%load static%}
+{% load crispy_forms_tags %}
+<form method="post" class="col-sm-12 col-md-4">
+    {% csrf_token %}
+    {{ form|crispy }}
+{% extends 'appname/filename' %}
+</templates>
