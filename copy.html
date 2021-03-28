@@ -40,6 +40,11 @@ Fullname = forms.CharField(label='',widget=forms.TextInput(attrs={'placeholder':
 from django.urls import path,include
 include('dasphoto.urls')
 </project-urls>
+<app-urls>
+from django.urls import path
+from . import views
+urlpatterns = [path("",views.index,name='index'),]
+</app-urls>
 <views>
 from django.contrib import messages
 messages.success(request,'Thank you {username} for this valuable info'.format(username=name))
@@ -102,3 +107,73 @@ list_display
     {{ form|crispy }}
 {% extends 'appname/filename' %}
 </templates>
+<heroku>
+git init
+ heroku login
+ heroku create <app_name>
+ heroku addons:create heroku-postgresql:hobby-dev
+ heroku restart
+ heroku pg:reset DATABASE (no need to change the DATABASE)
+ heroku run rake db:migrate
+ heroku  run bash<!--cmd for heroku-->
+to escape from heroku bash  type 'exit'
+ <!--how to update db in heroku-->
+ run local makemigrations
+ push them
+ heroku run python manage.py makemigrations
+ heroku run python migrate
+ heroku restart
+ <!--to create superuser-->
+ heroku run python manage.py createsuperuser
+</heroku>
+<!--for timezone TIME_ZONE = 'Asia/Calcutta'-->
+<gog-captcha>
+<views>
+import json
+from django.conf import settings
+def form_valid(self, form):
+    # get the token submitted in the form
+    recaptcha_response = self.request.POST.get('g-recaptcha-response')
+    url = 'https://www.google.com/recaptcha/api/siteverify'
+    payload = {
+        'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+        'response': recaptcha_response
+    }
+    data = urllib.parse.urlencode(payload).encode()
+    req = urllib.request.Request(url, data=data)
+
+    # verify the token submitted with the form is valid
+    response = urllib.request.urlopen(req)
+    result = json.loads(response.read().decode())
+
+    # result will be a dict containing 'contact' and 'action'.
+    # it is important to verify both
+
+    if (not result['index']) or (not result['action'] == ''):  # make sure action matches the one from your template
+        messages.error(self.request, 'Invalid reCAPTCHA. Please try again.')
+        return super().form_invalid(form)
+</views>
+<settings>
+GOOGLE_RECAPTCHA_SECRET_KEY = 'serverkey'
+</settings>
+<html>
+<script src='https://www.google.com/recaptcha/api.js?render=sitekey'></script>
+<script>
+grecaptcha.ready(function() {
+      grecaptcha.execute('6Ld-sitekey', {action: ""}).then(function(token) {
+        document.getElementById('g-recaptcha-response').value = token;
+      });
+  });
+</script>
+ <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response"> <!--before the submit button--></html>
+</gog-captcha>
+<!--for getting the whatsapp app-->
+<whatsapp>  <a href='http://api.whatsapp.com/send?phone=9109447001453' class="nav-link f-medium">whatsapp</a></whatsapp>
+<general><!--installing virtual env-->py -m venv env
+python3 -m pip install requests==2.18.4
+deactivate
+
+
+</general>
+pip install -r requirements.txt <!--save all the packages in the txt file an have the comment-->
+pip uninstall -r requirements.txt -y<!--to uninstall all the packages-->
